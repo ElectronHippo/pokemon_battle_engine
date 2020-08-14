@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <center>
+            <canvas style="background-color: black; image-rendering: -moz-crisp-edges; image-rendering: pixelated; image-rendering: crisp-edges;" width="700px" height="500px" id="canvas"></canvas>
+        </center>
+    <script>
+        //All bugs are *not* in *my* code - Youll find them all in Mr Beetle's code.//
+        //This is my damned code GreyBeetle213, Mine! - ElectronHippo The Chicken Lord//
+        var pokedex = [['Bulbasaur',['10','4','5','5','4'], ['10', '3']],['Ivysaur', ['10', '3']],['Venusaur', ['10', '3']],['Charmander',['10','4','5','5','4']],['Charmelion'],['Charizard']] //Pokedex. [pokemon name, [base hp atk def sp.atk spd], [move, level.learned]]//
+        var movedex = [['scratch', '30', '100'],['growl', '00', '100'], ['gun', '200', '80'], ['vine whip', '50', '100']] //Movedex. [move name, move power ,move accuracy]//
+        var party = [['4','23', '1','0','2'], ['3','100','0','1','3','2','','']] //Pokemon stats: id, lvl, move 1, move 2, move 3, move 4 , held item, nickname//
+        var opposing = [['0','3','0','1`']] //Remove this if using this code in another program!!//
+        var pokemon = ''
+        var firstmove = ''
+        var secondmove = ''
+        var thirdmove = ''
+        var fourthmove = ''
+        var firstmovepower = ''
+        var secondmovepower = ''
+        var thirdmovepower = ''
+        var fourthmovepower = ''
+        var currentPokemon = 0
+        var level = '0'
+        var atk = 0
+        var def = 0
+        var hp = 0
+        var spatk = 0
+        var spd = 0
+        var platform = new Image()
+        platform.src = 'battle-platform.png'
+        var ctx = canvas.getContext('2d')
+        document.getElementById("canvas").height = window.innerHeight - 4
+        document.getElementById("canvas").width = (window.innerHeight - 4) + window.innerHeight/4
+        ctx.webkitImageSmoothingEnabled = false
+        ctx.mozImageSmoothingEnabled = false
+        ctx.imageSmoothingEnabled = false
+        pixelsize = document.getElementById("canvas").width/176
+        document.getElementById("canvas").style.backgroundColor = 'darkseagreen'
+        ctx.font = ctx.font.replace(/\d+px/, "30px");
+
+        var basictemplate = new Image()
+        basictemplate.src = 'emptypokemonstatbox.png'
+        var basictemplate1 = new Image()
+        basictemplate1.src = 'emptypokemonstatbox.png'
+        var thingy = new Image()
+        thingy.src = 'thingy.png'
+        var opposingpkmn = new Image()
+        var currentpkmn = new Image()
+        
+ 
+
+        function scanInOpposing(PokemonToScan){
+            opposingpkmn.src = pokedex[parseInt(opposing[PokemonToScan][0], 10)][0] + '.png'            
+
+        }
+
+
+        function scanIn(PokemonToScan){
+            var incrementor = 0
+            currentpkmn.src = pokedex[parseInt(party[PokemonToScan][0], 10)][0] + '.png'    
+            pokemon = pokedex[parseInt(party[PokemonToScan][0], 10)][0]
+            level = parseInt(party[PokemonToScan][1])
+            while(incrementor != parseInt(level , 10)){
+                if (hp == 0){
+                    hp = parseInt(pokedex[parseInt(party[PokemonToScan][0], 10)][1][0])
+                }
+                else{
+                    hp = Math.ceil(hp + (hp / 30))
+                }
+                if (atk == 0){
+                    atk = parseInt(pokedex[parseInt(party[PokemonToScan][0], 10)][1][1])
+                }
+                else{
+                    atk = Math.ceil(atk + (atk / 30))
+                }
+                if (def == 0){
+                    def = parseInt(pokedex[parseInt(party[PokemonToScan][0], 10)][1][2])
+                }else{
+                    def = Math.ceil(def + (def / 30))
+                }
+                if (spatk == 0){
+                    spatk = parseInt(pokedex[parseInt(party[PokemonToScan][0], 10)][1][3])
+                }
+                else{
+                    spatk = Math.ceil(spatk + (spatk / 30))
+                }
+                if (spd == 0){
+                    spd = parseInt(pokedex[parseInt(party[PokemonToScan][0], 10)][1][4])
+                }
+                else{
+                    spd = Math.ceil(spd + (spd / 30))
+                }
+                incrementor += 1
+                console.log(incrementor)
+
+
+            }
+
+            firstmove = movedex[parseInt(party[PokemonToScan][2], 10)][0]
+            firstmovepower = movedex[parseInt(party[PokemonToScan][2], 10)][1]
+            if (party[PokemonToScan][3] != ''){
+                secondmove = movedex[parseInt(party[PokemonToScan][3], 10)][0]
+                secondmovepower = movedex[parseInt(party[PokemonToScan][3], 10)][1]              
+                if (party[PokemonToScan][4] != ''){
+                    thirdmove = movedex[parseInt(party[PokemonToScan][4], 10)][0]
+                    thirdmovepower = movedex[parseInt(party[PokemonToScan][4], 10)][1]
+                    if (party[PokemonToScan][5] != ''){
+                        fourthmove = movedex[parseInt(party[PokemonToScan][5], 10)][0]
+                        fourthmovepower = movedex[parseInt(party[PokemonToScan][5], 10)][1]
+                    }
+                    else{
+                        fourthmove = ''
+                    }
+                }
+                else{
+                    thirdmove = ''
+                    fourthmove = ''
+                }              
+            }
+            else{
+                secondmove = ''
+                thirdmove = ''
+                fourthmove = ''
+            }
+        }
+        function draw(){
+            ctx.fillText('Fletchling',50,50)
+            ctx.drawImage(platform, 80 * pixelsize, 25 * pixelsize, 64 * pixelsize, 32 * pixelsize)
+            ctx.drawImage(opposingpkmn, 96 * pixelsize, 20 * pixelsize, 32 * pixelsize, 30 * pixelsize)
+            ctx.drawImage(currentpkmn, 24 * pixelsize, document.getElementById("canvas").height - (87 * pixelsize), 64 * pixelsize, 64 * pixelsize)
+            ctx.drawImage(basictemplate, 1 * pixelsize, 1 * pixelsize, 64 * pixelsize, 32 * pixelsize)
+            ctx.drawImage(thingy, 0 * pixelsize, document.getElementById("canvas").height - 32 * pixelsize, 256 * pixelsize, 32 * pixelsize) //...I know.//
+            ctx.drawImage(basictemplate1, document.getElementById("canvas").width - (65 * pixelsize), document.getElementById("canvas").height - (65 * pixelsize), 64 * pixelsize, 32 * pixelsize)
+        }
+        scanIn(1)
+        scanInOpposing(0)
+        currentPokemon = 1
+
+        
+        console.log('You sent out ' + pokemon + '!')
+        console.log('lvl:' + level + ' ' + pokemon)
+        console.log('Moves: ' + firstmove + ' ' + firstmovepower + '   ' + secondmove + ' ' + secondmovepower)
+        console.log('       ' + thirdmove + ' ' + thirdmovepower + '   ' + fourthmove + ' ' + fourthmovepower)
+        console.log('Hp:' + hp + ' Atk:' + atk + ' Def:' + def + ' SpAtk:' + spatk + ' Spd:' + spd)
+        setInterval(draw, 100)
+
+    </script>
+</body>
+</html>
