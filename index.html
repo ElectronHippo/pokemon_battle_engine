@@ -6,6 +6,7 @@
     <title>Document</title>
 </head>
 <body>
+
         <center>
             <canvas style="background-color: black; image-rendering: -moz-crisp-edges; image-rendering: pixelated; image-rendering: crisp-edges;" width="700px" height="500px" id="canvas"></canvas>
         </center>
@@ -42,6 +43,7 @@
         ctx.imageSmoothingEnabled = false
         pixelsize = document.getElementById("canvas").width/176
         document.getElementById("canvas").style.backgroundColor = 'darkseagreen'
+        ctx.font = '68px press_start_2pregular';
         ctx.font = ctx.font.replace(/\d+px/, "30px");
 
         var basictemplate = new Image()
