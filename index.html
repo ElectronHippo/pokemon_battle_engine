@@ -5,12 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body style="margin: 0; padding: 0;">
+<link href='https://fonts.googleapis.com/css?family=Press Start 2P' rel='stylesheet'>
+<style>
+    canvas {
+        font-family: 'Press Start 2P';font-size: 22px;
+    }
+    </style>
+<body style="margin: 0; padding: 0;" >
+
+    
 
         <center>
             <canvas style="background-color: black; image-rendering: -moz-crisp-edges; image-rendering: pixelated; image-rendering: crisp-edges;" width="700px" height="500px" id="canvas"></canvas>
         </center>
     <script>
+        setTimeout(function() {
+        ctx.font = "24px 'Press Start 2P Regular'"; // uninstalled @fontface font style 
+        ctx.textBaseline = 'top';
+        ctx.fillText('What!', 50, 50);      
+        }, 100); 
         //All bugs are *not* in *my* code - Youll find them all in Mr Beetle's code.//
         //This is my damned code GreyBeetle213, Mine! - ElectronHippo The Chicken Lord//
         var pokedex = [['Bulbasaur',['10','4','5','5','4'], ['10', '3']],['Ivysaur', ['10', '3']],['Venusaur', ['10', '3']],['Charmander',['10','4','5','5','4']],['Charmelion'],['Charizard']] //Pokedex. [pokemon name, [base hp atk def sp.atk spd], [move, level.learned]]//
@@ -42,10 +55,8 @@
         ctx.mozImageSmoothingEnabled = false
         ctx.imageSmoothingEnabled = false
         pixelsize = document.getElementById("canvas").width/176
-        document.getElementById("canvas").style.backgroundColor = 'darkseagreen'
-        ctx.font = 'Press Start 2P';
-        
-
+        document.getElementById("canvas").style.backgroundColor = 'darkseagreen'     
+        ctx.font = ctx.font.replace(/\d+px/, "30px");
         var basictemplate = new Image()
         basictemplate.src = 'emptypokemonstatbox.png'
         var basictemplate1 = new Image()
@@ -54,7 +65,7 @@
         thingy.src = 'thingy.png'
         var opposingpkmn = new Image()
         var currentpkmn = new Image()
-        
+ 
  
 
         function scanInOpposing(PokemonToScan){
@@ -132,7 +143,7 @@
             }
         }
         function draw(){
-            ctx.fillText('Fletchling',50,50)
+            //ctx.fillText('Fletchling',50,50)
             ctx.drawImage(platform, 80 * pixelsize, 25 * pixelsize, 64 * pixelsize, 32 * pixelsize)
             ctx.drawImage(opposingpkmn, 96 * pixelsize, 20 * pixelsize, 32 * pixelsize, 30 * pixelsize)
             ctx.drawImage(currentpkmn, 24 * pixelsize, document.getElementById("canvas").height - (87 * pixelsize), 64 * pixelsize, 64 * pixelsize)
