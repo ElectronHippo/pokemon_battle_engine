@@ -5,12 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<link href='https://fonts.googleapis.com/css?family=Press Start 2P' rel='stylesheet'>
-<style>
-    canvas {
-        font-family: 'Press Start 2P';font-size: 22px;
-    }
-    </style>
 <body style="margin: 0; padding: 0;" >
 
     
@@ -19,16 +13,12 @@
             <canvas style="background-color: black; image-rendering: -moz-crisp-edges; image-rendering: pixelated; image-rendering: crisp-edges;" width="700px" height="500px" id="canvas"></canvas>
         </center>
     <script>
-        setTimeout(function() {
-        ctx.font = "24px 'Press Start 2P Regular'"; // uninstalled @fontface font style 
-        ctx.textBaseline = 'top';
-        ctx.fillText('What!', 50, 50);      
-        }, 100); 
+        
         //All bugs are *not* in *my* code - Youll find them all in Mr Beetle's code.//
         //This is my damned code GreyBeetle213, Mine! - ElectronHippo The Chicken Lord//
-        var pokedex = [['Bulbasaur',['10','4','5','5','4'], ['10', '3']],['Ivysaur', ['10', '3']],['Venusaur', ['10', '3']],['Charmander',['10','4','5','5','4']],['Charmelion'],['Charizard']] //Pokedex. [pokemon name, [base hp atk def sp.atk spd], [move, level.learned]]//
+        var pokedex = [['bulbasaur',['10','4','5','5','4'], ['10', '3']],['ivysaur', ['10', '3']],['venusaur', ['10', '3']],['charmander',['10','4','5','5','4']],['charmelion'],['charizard']] //Pokedex. [pokemon name, [base hp atk def sp.atk spd], [move, level.learned]]//
         var movedex = [['scratch', '30', '100'],['growl', '00', '100'], ['gun', '200', '80'], ['vine whip', '50', '100']] //Movedex. [move name, move power ,move accuracy]//
-        var party = [['4','23', '1','0','2'], ['3','100','0','1','3','2','','']] //Pokemon stats: id, lvl, move 1, move 2, move 3, move 4 , held item, nickname//
+        var party = [['3','23', '1','0','2'], ['3','100','0','1','3','2','','']] //Pokemon stats: id, lvl, move 1, move 2, move 3, move 4 , held item, nickname//
         var opposing = [['0','3','0','1`']] //Remove this if using this code in another program!!//
         var pokemon = ''
         var firstmove = ''
@@ -56,7 +46,6 @@
         ctx.imageSmoothingEnabled = false
         pixelsize = document.getElementById("canvas").width/176
         document.getElementById("canvas").style.backgroundColor = 'darkseagreen'     
-        ctx.font = ctx.font.replace(/\d+px/, "30px");
         var basictemplate = new Image()
         basictemplate.src = 'emptypokemonstatbox.png'
         var basictemplate1 = new Image()
@@ -65,11 +54,40 @@
         thingy.src = 'thingy.png'
         var opposingpkmn = new Image()
         var currentpkmn = new Image()
+        var i = 0
+        var loadimgs = [new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, ]
+        while (i < loadimgs.length){
+            loadimgs[i].src = 'font/char_' + (i) + '.png'
+            i = i + 1
+        }
+        i = 0
+        function drawText(text){
+            var alphabet = 'abcdefghijklmnopqrstuvwxyz'
+            var textimgs = []
+            
+            var i = 0
+            var i2 = 0
+            while (i2 < text.length){
+            i = 0
+            s = ''
+            while (text.charAt(i2) != s)
+            {
+                s = alphabet.charAt(i)
+                i +=1
+            }
+            textimgs.push(new Image)
+            textimgs[i2].src = 'font/char_' + (i - 1) + '.png'
+            i2 +=1
+            }
+            return textimgs
+        }
  
  
 
         function scanInOpposing(PokemonToScan){
-            opposingpkmn.src = pokedex[parseInt(opposing[PokemonToScan][0], 10)][0] + '.png'            
+            opposingpkmn.src = pokedex[parseInt(opposing[PokemonToScan][0], 10)][0] + '.png' 
+            opposingpkmnname = pokedex[parseInt(opposing[PokemonToScan][0], 10)][0]
+            return opposingpkmnname           
 
         }
 
@@ -111,6 +129,7 @@
                 }
                 incrementor += 1
                 console.log(incrementor)
+                return pokemon
 
 
             }
@@ -144,15 +163,35 @@
         }
         function draw(){
             //ctx.fillText('Fletchling',50,50)
+
             ctx.drawImage(platform, 80 * pixelsize, 25 * pixelsize, 64 * pixelsize, 32 * pixelsize)
             ctx.drawImage(opposingpkmn, 96 * pixelsize, 20 * pixelsize, 32 * pixelsize, 30 * pixelsize)
             ctx.drawImage(currentpkmn, 24 * pixelsize, document.getElementById("canvas").height - (87 * pixelsize), 64 * pixelsize, 64 * pixelsize)
             ctx.drawImage(basictemplate, 1 * pixelsize, 1 * pixelsize, 64 * pixelsize, 32 * pixelsize)
             ctx.drawImage(thingy, 0 * pixelsize, document.getElementById("canvas").height - 32 * pixelsize, 256 * pixelsize, 32 * pixelsize) //...I know.//
             ctx.drawImage(basictemplate1, document.getElementById("canvas").width - (65 * pixelsize), document.getElementById("canvas").height - (65 * pixelsize), 64 * pixelsize, 32 * pixelsize)
+            var xpos = 4
+            var ypos = 5
+            var imgtodraw = 0
+            while (imgtodraw < drawText(scanInOpposing(0)).length){
+                ctx.drawImage(drawText(scanInOpposing(0))[imgtodraw], xpos * pixelsize, ypos * pixelsize, 3 * pixelsize, 5 * pixelsize) // this bit draws the custom text. Might be a *bit* laggy, but idk how else to do it.//
+                xpos = xpos + 4
+                imgtodraw +=1
+            }
+            var xpos = 2 * pixelsize
+            var ypos = 2 * pixelsize
+            var imgtodraw = 0
+            while (imgtodraw < drawText(scanIn(0)).length){
+                ctx.drawImage(drawText(scanIn(0))[imgtodraw], xpos * pixelsize, ypos * pixelsize, 3 * pixelsize, 5 * pixelsize) // this bit draws the custom text. Might be a *bit* laggy, but idk how else to do it.//
+                xpos = xpos + 4
+                imgtodraw +=1
+            }
+            
         }
         scanIn(1)
         scanInOpposing(0)
+
+
         currentPokemon = 1
 
         
@@ -162,6 +201,7 @@
         console.log('       ' + thirdmove + ' ' + thirdmovepower + '   ' + fourthmove + ' ' + fourthmovepower)
         console.log('Hp:' + hp + ' Atk:' + atk + ' Def:' + def + ' SpAtk:' + spatk + ' Spd:' + spd)
         setInterval(draw, 100)
+
 
     </script>
 </body>
